@@ -61,7 +61,7 @@ dependencies {
     implementation(libs.koin.annotations)
     // serialization json
     implementation(libs.kotlinx.serialization.json)
-    //ktor
+    // ktor
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     // coroutines
