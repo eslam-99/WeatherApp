@@ -13,8 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BlurredEllipse(figmaBlurValue: Float, isDay: Boolean, modifier: Modifier = Modifier) {
-    val ellipseColor = if (isDay) Color(0xFF00619D) else Color(0xFFC0B7FF)
+fun BlurredEllipse(figmaBlurValue: Float, ellipseColor: Color, modifier: Modifier = Modifier) {
     val composeBlurRadius = (figmaBlurValue).dp
 
     Box(

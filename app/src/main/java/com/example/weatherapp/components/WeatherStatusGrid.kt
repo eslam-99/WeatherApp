@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weatherapp.R
+import com.example.weatherapp.domain.model.CurrentDayWeatherStatus
 import com.example.weatherapp.ui.theme.DarkBackgroundColor70
 import com.example.weatherapp.ui.theme.DarkBorderColor
 import com.example.weatherapp.ui.theme.DarkTextColor60
@@ -35,7 +36,7 @@ import com.example.weatherapp.ui.theme.Urbanist
 
 @Composable
 @OptIn(ExperimentalLayoutApi::class)
-fun WeatherStatusGrid(isDay: Boolean) {
+fun WeatherStatusGrid(isDay: Boolean, todayWeatherStatus: CurrentDayWeatherStatus?) {
     FlowRow(
         modifier = Modifier
             .padding(top = 24.dp)
@@ -47,42 +48,42 @@ fun WeatherStatusGrid(isDay: Boolean) {
         val gridItemModifier = Modifier.weight(1f)
         GridItem(
             icon = painterResource(R.drawable.fast_wind),
-            value = "13 KM/h",
+            value = "${todayWeatherStatus?.windSpeed ?: "-"} KM/h",
             type = "Wind",
             isDay = isDay,
             modifier = gridItemModifier
         )
         GridItem(
             icon = painterResource(R.drawable.humidity),
-            value = "24%",
+            value = "${todayWeatherStatus?.humidity ?: "-"}%",
             type = "Humidity",
             isDay = isDay,
             modifier = gridItemModifier
         )
         GridItem(
             icon = painterResource(R.drawable.rain),
-            value = "2%",
+            value = "${todayWeatherStatus?.rain ?: "-"}%",
             type = "Rain",
             isDay = isDay,
             modifier = gridItemModifier
         )
         GridItem(
             icon = painterResource(R.drawable.uv),
-            value = "2",
+            value = "${todayWeatherStatus?.uvIndex ?: "-"}",
             type = "UV Index",
             isDay = isDay,
             modifier = gridItemModifier
         )
         GridItem(
             icon = painterResource(R.drawable.pressure),
-            value = "1012 hPa",
+            value = "${todayWeatherStatus?.pressure ?: "-"} hPa",
             type = "Pressure",
             isDay = isDay,
             modifier = gridItemModifier
         )
         GridItem(
             icon = painterResource(R.drawable.temperature),
-            value = "22°C",
+            value = "${todayWeatherStatus?.feelsLike ?: "-"}°C",
             type = "Feels like",
             isDay = isDay,
             modifier = gridItemModifier

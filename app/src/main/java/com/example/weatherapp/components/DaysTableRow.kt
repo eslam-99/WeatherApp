@@ -24,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weatherapp.R
+import com.example.weatherapp.ui.model.DayForecastUiModel
+import com.example.weatherapp.ui.model.WeatherCondition
 import com.example.weatherapp.ui.theme.DarkTextColor
 import com.example.weatherapp.ui.theme.DarkTextColor60
 import com.example.weatherapp.ui.theme.DarkTextColor87
@@ -31,13 +33,12 @@ import com.example.weatherapp.ui.theme.LightTextColor
 import com.example.weatherapp.ui.theme.LightTextColor60
 import com.example.weatherapp.ui.theme.LightTextColor87
 import com.example.weatherapp.ui.theme.Urbanist
+import com.example.weatherapp.ui.utils.getDrawable
 
 @Composable
 fun DaysTableRow(
     day: String,
-    resource: Painter,
-    maxTemp: Int,
-    minTemp: Int,
+    dayForecast: DayForecastUiModel?,
     isDay: Boolean,
 ) {
     Row(
@@ -46,7 +47,7 @@ fun DaysTableRow(
     ) {
         DayText(day, isDay)
         Image(
-            painter = resource,
+            painter = painterResource(dayForecast?.weatherCondition.getDrawable(isDay)),
             contentDescription = null,
             modifier = Modifier
                 .padding(vertical = 6.5.dp)
@@ -55,7 +56,8 @@ fun DaysTableRow(
             contentScale = ContentScale.FillHeight
         )
         RangeTemperaturesByDay(
-            maxTemperature = maxTemp, minTemperature = minTemp,
+            maxTemperature = dayForecast?.maxTemperature,
+            minTemperature = dayForecast?.minTemperature,
             isDay,
             modifier = Modifier.weight(1.5f)
         )
@@ -70,10 +72,12 @@ private fun DaysTableRowPreview() {
     ) {
         DaysTableRow(
             "Monday",
-            painterResource(R.drawable.day_partly_cloudy),
-            32,
-            20,
-            true
+            DayForecastUiModel(
+                weatherCondition = WeatherCondition.CLEAR_SKY,
+                maxTemperature = 30,
+                minTemperature = 20
+            ),
+            isDay = true
         )
     }
 }
@@ -99,8 +103,8 @@ private fun RowScope.DayText(
 
 @Composable
 private fun RangeTemperaturesByDay(
-    maxTemperature: Int,
-    minTemperature: Int,
+    maxTemperature: Int?,
+    minTemperature: Int?,
     isDay: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -114,8 +118,8 @@ private fun RangeTemperaturesByDay(
 }
 
 @Composable
-private fun MinMaxTemperatures(maxDegree: Int, minDegree: Int, isDay: Boolean) {
-    DegreeMinMax14(maxDegree, painterResource(R.drawable.arrow_up), isDay)
+private fun MinMaxTemperatures(maxTemperature: Int?, minTemperature: Int?, isDay: Boolean) {
+    DegreeMinMax14(maxTemperature, painterResource(R.drawable.arrow_up), isDay)
     VerticalDivider(
         thickness = 1.dp,
         color = if (isDay) Color.Black.copy(alpha = 0.24f) else Color.White.copy(alpha = 0.24f),
@@ -123,11 +127,11 @@ private fun MinMaxTemperatures(maxDegree: Int, minDegree: Int, isDay: Boolean) {
             .height(14.dp)
             .padding(horizontal = 4.dp)
     )
-    DegreeMinMax14(minDegree, painterResource(R.drawable.arrow_down), isDay)
+    DegreeMinMax14(minTemperature, painterResource(R.drawable.arrow_down), isDay)
 }
 
 @Composable
-private fun DegreeMinMax14(degree: Int, iconResource: Painter, isDay: Boolean) {
+private fun DegreeMinMax14(temperature: Int?, iconResource: Painter, isDay: Boolean) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -138,7 +142,7 @@ private fun DegreeMinMax14(degree: Int, iconResource: Painter, isDay: Boolean) {
             modifier = Modifier.size(12.dp),
         )
         Text(
-            text = "$degree°C",
+            text = "${temperature ?: "-"}°C",
             fontFamily = Urbanist,
             fontWeight = FontWeight.Medium,
             fontSize = 14.sp,

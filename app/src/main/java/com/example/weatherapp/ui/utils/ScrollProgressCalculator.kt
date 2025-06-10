@@ -1,4 +1,4 @@
-package com.example.weatherapp.utils
+package com.example.weatherapp.ui.utils
 
 import androidx.compose.foundation.lazy.LazyListState
 

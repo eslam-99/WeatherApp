@@ -26,7 +26,7 @@ import com.example.weatherapp.ui.theme.LightTextColor
 import com.example.weatherapp.ui.theme.Urbanist
 
 @Composable
-fun CityInfoRow(isDay: Boolean, scrollProgress: Float) {
+fun CityInfoRow(cityName: String?, isDay: Boolean, scrollProgress: Float) {
     Column(
         Modifier
             .background(
@@ -51,7 +51,7 @@ fun CityInfoRow(isDay: Boolean, scrollProgress: Float) {
                     modifier = Modifier.size(24.dp),
                 )
                 Text(
-                    text = "Baghdad",
+                    text = cityName ?: "-",
                     fontFamily = Urbanist,
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
@@ -62,6 +62,7 @@ fun CityInfoRow(isDay: Boolean, scrollProgress: Float) {
                 )
             }
         }
-        Box(Modifier.padding(bottom = (12 * scrollProgress).dp))
+        Box(Modifier.padding(bottom = 12.dp))
+//        Box(Modifier.padding(bottom = (12 * scrollProgress).dp))
     }
 }

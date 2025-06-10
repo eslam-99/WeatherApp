@@ -11,11 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weatherapp.R
+import com.example.weatherapp.ui.model.DayForecastUiModel
 import com.example.weatherapp.ui.theme.DarkBackgroundColor70
 import com.example.weatherapp.ui.theme.DarkBorderColor
 import com.example.weatherapp.ui.theme.DarkTextColor
@@ -29,9 +28,9 @@ import java.util.Locale
 
 @SuppressLint("NewApi")
 @Composable
-fun NextDaysForecast(isDay: Boolean) {
+fun NextDaysForecast(isDay: Boolean, nextDaysForecast: List<DayForecastUiModel>?) {
     Text(
-        text = "Next 7 days",
+        text = "Next ${nextDaysForecast?.size ?: "7"} days",
         fontFamily = Urbanist,
         fontWeight = FontWeight.SemiBold,
         fontSize = 20.sp,
@@ -56,28 +55,19 @@ fun NextDaysForecast(isDay: Boolean) {
             .background(if (isDay) LightBackgroundColor70 else DarkBackgroundColor70)
             .padding(vertical = 8.dp)
     ) {
-        val today = LocalDate.now()
-        val next7Days = (1..7).map { daysToAdd ->
-            today
-                .plusDays(daysToAdd.toLong())
-                .dayOfWeek
-                .getDisplayName(TextStyle.FULL, Locale.getDefault())
-        }
-        val next7Resources = listOf(
-            painterResource(R.drawable.day_clear_sky),
-            painterResource(R.drawable.day_partly_cloudy),
-            painterResource(R.drawable.day_partly_cloudy),
-            painterResource(R.drawable.day_clear_sky),
-            painterResource(R.drawable.day_overcast),
-            painterResource(R.drawable.day_clear_sky),
-            painterResource(R.drawable.day_overcast),
-        )
-        val maxTemp = 32
-        val minTemp = 20
-        next7Days.forEachIndexed { index, day ->
-            DaysTableRow(day, next7Resources[index], maxTemp, minTemp, isDay)
-            if (index != next7Days.size - 1)
+        val nextDays = getNextDays((nextDaysForecast?.size ?: 7))
+        nextDays.forEachIndexed { index, day ->
+            DaysTableRow(day, nextDaysForecast?.get(index), isDay)
+            if (index != nextDays.size - 1)
                 DaysTableDivider(isDay)
         }
     }
+}
+
+@SuppressLint("NewApi")
+private fun getNextDays(nDays: Int): List<String> = (1..nDays).map { daysToAdd ->
+    LocalDate.now()
+        .plusDays(daysToAdd.toLong())
+        .dayOfWeek
+        .getDisplayName(TextStyle.FULL, Locale.getDefault())
 }
