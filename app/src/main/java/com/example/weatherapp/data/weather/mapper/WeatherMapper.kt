@@ -59,8 +59,7 @@ fun WeatherDto.toWeather(): Weather {
         currentDayWeatherStatus = currentDayWeatherStatus,
         hourlyStatus = hourlyStatus,
         nextDaysForecast = nextDaysForecast,
-        isDay = true,
-//        isDay = currentWeather.isDay == 1,
+        isDay = currentWeather.isDay == 1,
     )
 }
 
