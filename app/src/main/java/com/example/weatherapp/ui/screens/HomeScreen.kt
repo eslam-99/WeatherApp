@@ -41,8 +41,7 @@ fun HomeScreen(viewModel: HomeScreenViewModel) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeContent(weatherUiModel: WeatherUiModel?, modifier: Modifier = Modifier) {
-    val isDay = false
-//    val isDay = weatherUiModel?.isDay ?: true
+    val isDay = weatherUiModel?.isDay ?: true
     val lazyListState = rememberLazyListState()
     val animationTriggerHeight = 150f
     LazyColumn(
